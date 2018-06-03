@@ -58,6 +58,7 @@ public class WeatherActivity extends AppCompatActivity {
         if (weatherString != null) {
             //有缓存
             Weather weather = Utility.handleWeatherResponse(weatherString);
+            showWeatherInfo(weather);
         } else {
             String weatherId = getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.INVISIBLE);
@@ -94,9 +95,10 @@ public class WeatherActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = PreferenceManager
                                     .getDefaultSharedPreferences(WeatherActivity.this).edit();
                             editor.putString("weather", responseText);
+                            editor.apply();////  原子操作提交
                             showWeatherInfo(weather);
                         } else {
-                            Toast.makeText(WeatherActivity.this, "获取天气信息失败1", Toast.LENGTH_SHORT)
+                            Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT)
                                     .show();
                         }
                     }
@@ -138,7 +140,7 @@ public class WeatherActivity extends AppCompatActivity {
         comfortText.setText(comfort);
         carWashText.setText(carWash);
         sportText.setText(sport);
-        weatherLayout.setVisibility(View.INVISIBLE);
+        weatherLayout.setVisibility(View.VISIBLE);
     }
 
 }
